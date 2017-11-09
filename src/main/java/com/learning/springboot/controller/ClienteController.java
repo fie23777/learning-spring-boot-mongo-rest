@@ -1,8 +1,12 @@
 package com.learning.springboot.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +24,9 @@ public class ClienteController {
 	ClienteRepository clienteRepository;
 	
 	@RequestMapping(method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String createCliente() {
-		System.out.println("ola mundo");
-		return "deu certo";
+	public  List<Cliente> getAllCliente() {
+		Sort sortByNome = new Sort(Sort.Direction.ASC, "email");
+		return clienteRepository.findAll(sortByNome);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
@@ -30,18 +34,18 @@ public class ClienteController {
 		clienteRepository.save(cliente);
 	}
 	
-	@RequestMapping(value = "/{id}")
+	@RequestMapping(value = "cliente/{id}")
 	public Cliente read(@PathVariable String id) {
 		return clienteRepository.findOne(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-	public void update(Cliente cliente) {
+	public void update(@RequestBody Cliente cliente) {
 		clienteRepository.save(cliente);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void delete(String id) {
+	@DeleteMapping(value = "/cliente/{id}")
+	public void delete(@PathVariable ("id") String id) {
 		clienteRepository.delete(id);
 	}
 }
