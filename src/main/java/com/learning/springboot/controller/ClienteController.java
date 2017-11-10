@@ -4,48 +4,53 @@ package com.learning.springboot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.learning.springboot.model.Cliente;
-import com.learning.springboot.repository.ClienteRepository;
+import com.learning.springboot.service.ClienteService;
 
 @RestController
 @RequestMapping(path = "/api/cliente")
 public class ClienteController {
 
 	@Autowired
-	ClienteRepository clienteRepository;
+	public ClienteService clienteService;
 	
-	@RequestMapping(method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public  List<Cliente> getAllCliente() {
-		Sort sortByNome = new Sort(Sort.Direction.ASC, "email");
-		return clienteRepository.findAll(sortByNome);
+	
+	@GetMapping
+	public ResponseEntity<List<Cliente>> listarTodos(){
+		return ResponseEntity.ok(this.clienteService.listarTodos());
+	}
+
+	@GetMapping(path="/{id}")
+	public ResponseEntity<Cliente> listarPorId(@PathVariable(name="id") String id){
+		return ResponseEntity.ok(this.clienteService.listarPorId(id));
+		
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
-	public void createCliente(@RequestBody Cliente cliente) {
-		clienteRepository.save(cliente);
+	@PostMapping
+	public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente cliente){
+		return ResponseEntity.ok(this.clienteService.cadastrar(cliente));
 	}
 	
-	@RequestMapping(value = "cliente/{id}")
-	public Cliente read(@PathVariable String id) {
-		return clienteRepository.findOne(id);
+	@PutMapping(path="/{id}")
+	public ResponseEntity<Cliente> cadastrar(@PathVariable(name="id") String id ,@RequestBody Cliente cliente){
+		cliente.setId(id);
+		return ResponseEntity.ok(this.clienteService.atualizar(cliente));
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-	public void update(@RequestBody Cliente cliente) {
-		clienteRepository.save(cliente);
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<Integer> deletar(@PathVariable(name="id") String id){
+		this.clienteService.remover(id);
+		return ResponseEntity.ok(1);
 	}
 	
-	@DeleteMapping(value = "/cliente/{id}")
-	public void delete(@PathVariable ("id") String id) {
-		clienteRepository.delete(id);
-	}
 }
