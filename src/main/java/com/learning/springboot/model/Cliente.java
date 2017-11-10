@@ -1,5 +1,7 @@
 package com.learning.springboot.model;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,7 +11,12 @@ public class Cliente {
 	
 	@Id
 	private String id;
+	
+	@NotEmpty(message="O nome não pode ser vazio")
 	private String nome;
+	
+	@NotEmpty(message="O email não pode ser vazio")
+	@Email(message="Email inválido")
 	private String email;
 
 	public String getId() {
