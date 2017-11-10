@@ -1,10 +1,14 @@
 package com.learning.springboot.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.learning.springboot.model.Cliente;
+import com.learning.springboot.responsegeneric.ResponseGeneric;
 import com.learning.springboot.service.ClienteService;
 
 @RestController
@@ -26,31 +31,36 @@ public class ClienteController {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Cliente>> listarTodos(){
-		return ResponseEntity.ok(this.clienteService.listarTodos());
+	public ResponseEntity<ResponseGeneric<List<Cliente>>> listarTodos(){
+		return ResponseEntity.ok(new ResponseGeneric<List<Cliente>>( this.clienteService.listarTodos()));
 	}
 
 	@GetMapping(path="/{id}")
-	public ResponseEntity<Cliente> listarPorId(@PathVariable(name="id") String id){
-		return ResponseEntity.ok(this.clienteService.listarPorId(id));
+	public ResponseEntity<ResponseGeneric<Cliente>> listarPorId(@PathVariable(name="id") String id){
+		return ResponseEntity.ok(new ResponseGeneric<Cliente>( this.clienteService.listarPorId(id)));
 		
 	}
 	
 	@PostMapping
-	public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente cliente){
-		return ResponseEntity.ok(this.clienteService.cadastrar(cliente));
+	public ResponseEntity<ResponseGeneric<Cliente>> cadastrar(@Valid @RequestBody Cliente cliente, BindingResult result){
+		if(result.hasErrors()) {
+			List<String> erros = new ArrayList<String>();
+			result.getAllErrors().forEach(erro-> erros.add(erro.getDefaultMessage()));
+			return ResponseEntity.badRequest().body(new ResponseGeneric<Cliente>(erros));
+		}
+		return ResponseEntity.ok(new ResponseGeneric<Cliente>( this.clienteService.cadastrar(cliente)));
 	}
 	
 	@PutMapping(path="/{id}")
-	public ResponseEntity<Cliente> cadastrar(@PathVariable(name="id") String id ,@RequestBody Cliente cliente){
+	public ResponseEntity<ResponseGeneric<Cliente>> cadastrar(@PathVariable(name="id") String id ,@RequestBody Cliente cliente){
 		cliente.setId(id);
-		return ResponseEntity.ok(this.clienteService.atualizar(cliente));
+		return ResponseEntity.ok(new ResponseGeneric<Cliente>(this.clienteService.atualizar(cliente)));
 	}
 	
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<Integer> deletar(@PathVariable(name="id") String id){
+	public ResponseEntity<ResponseGeneric<Integer>> deletar(@PathVariable(name="id") String id){
 		this.clienteService.remover(id);
-		return ResponseEntity.ok(1);
+		return ResponseEntity.ok(new ResponseGeneric<Integer>(1));
 	}
 	
 }
