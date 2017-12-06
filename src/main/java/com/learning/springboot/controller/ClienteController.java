@@ -4,11 +4,10 @@ package com.learning.springboot.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +22,7 @@ import com.learning.springboot.responsegeneric.ResponseGeneric;
 import com.learning.springboot.service.ClienteService;
 
 @RestController
+@CrossOrigin(origins="*")
 @RequestMapping(path = "/api/cliente")
 public class ClienteController {
 
@@ -42,7 +42,7 @@ public class ClienteController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ResponseGeneric<Cliente>> cadastrar(@Valid @RequestBody Cliente cliente, BindingResult result){
+	public ResponseEntity<ResponseGeneric<Cliente>> cadastrar(@RequestBody Cliente cliente, BindingResult result){
 		if(result.hasErrors()) {
 			List<String> erros = new ArrayList<String>();
 			result.getAllErrors().forEach(erro-> erros.add(erro.getDefaultMessage()));

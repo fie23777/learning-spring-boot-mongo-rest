@@ -12,11 +12,9 @@ public class Cliente {
 	@Id
 	private String id;
 	
-	@NotEmpty(message="O nome não pode ser vazio")
 	private String nome;
 	
-	@NotEmpty(message="O email não pode ser vazio")
-	@Email(message="Email inválido")
+
 	private String email;
 
 	public String getId() {
