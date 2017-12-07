@@ -1,4 +1,4 @@
-package com.learning.springboot.impl;
+package com.learning.springboot.util;
 
 public class ClienteFilter {
 	

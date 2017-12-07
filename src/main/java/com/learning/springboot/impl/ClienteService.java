@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.learning.springboot.model.Cliente;
 import com.learning.springboot.repository.ClienteRepository;
+import com.learning.springboot.util.ClienteFilter;
+import com.learning.springboot.util.ReturnGridCliente;
 
 @Service
 public class ClienteService implements com.learning.springboot.service.ClienteService {
@@ -63,15 +65,11 @@ public class ClienteService implements com.learning.springboot.service.ClienteSe
 		
 		ReturnGridCliente result = new ReturnGridCliente();
 	
-	    Criteria criterias = new Criteria();
+	    Criteria criterias = Criteria.where("nome").regex(filter.getNome());
 	
-		   if (filter.getNome() != null && !filter.getNome().isEmpty()) {
-			   criterias.where("nome").regex(filter.getNome());
-		   }
 	
-	Query query = new Query(criterias);
+	    Query query = new Query(criterias);
 	
-
 	
 	   List<Cliente> cliente = mongoTemplate.find(query, Cliente.class);
 	   result.setConteudo(cliente);

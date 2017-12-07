@@ -1,4 +1,4 @@
-package com.learning.springboot.impl;
+package com.learning.springboot.util;
 
 import java.util.ArrayList;
 import java.util.List;
