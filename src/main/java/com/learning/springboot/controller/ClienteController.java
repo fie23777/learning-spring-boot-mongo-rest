@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.learning.springboot.impl.ClienteFilter;
+import com.learning.springboot.impl.ReturnGridCliente;
 import com.learning.springboot.model.Cliente;
 import com.learning.springboot.responsegeneric.ResponseGeneric;
 import com.learning.springboot.service.ClienteService;
@@ -34,6 +36,11 @@ public class ClienteController {
 	public ResponseEntity<ResponseGeneric<List<Cliente>>> listarTodos(){
 		return ResponseEntity.ok(new ResponseGeneric<List<Cliente>>( this.clienteService.listarTodos()));
 	}
+	
+    @GetMapping("/panel")
+    public ReturnGridCliente findAll(ClienteFilter clienteFilter) {
+        return clienteService.findAll(clienteFilter);
+    }
 
 	@GetMapping(path="/{id}")
 	public ResponseEntity<ResponseGeneric<Cliente>> listarPorId(@PathVariable(name="id") String id){
