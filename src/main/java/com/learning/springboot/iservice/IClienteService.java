@@ -1,4 +1,4 @@
-package com.learning.springboot.service;
+package com.learning.springboot.iservice;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import com.learning.springboot.model.Cliente;
 import com.learning.springboot.util.ClienteFilter;
 import com.learning.springboot.util.ReturnGridCliente;
 
-public interface ClienteService {
+public interface IClienteService {
 	
 	List<Cliente> listarTodos(); 
 

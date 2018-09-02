@@ -1,4 +1,4 @@
-package com.learning.springboot.impl;
+package com.learning.springboot.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,10 @@ import com.learning.springboot.model.Cliente;
 import com.learning.springboot.repository.ClienteRepository;
 import com.learning.springboot.util.ClienteFilter;
 import com.learning.springboot.util.ReturnGridCliente;
+import com.learning.springboot.iservice.*;
 
 @Service
-public class ClienteService implements com.learning.springboot.service.ClienteService {
+public class ClienteService implements IClienteService {
 	
 	private MongoTemplate mongoTemplate;
 	public ClienteRepository clienteRepository;
