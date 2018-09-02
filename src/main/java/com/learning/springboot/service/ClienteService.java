@@ -1,23 +1,81 @@
-package com.learning.springboot.service;
+package com.learning.springboot.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
 import com.learning.springboot.model.Cliente;
+import com.learning.springboot.repository.ClienteRepository;
 import com.learning.springboot.util.ClienteFilter;
 import com.learning.springboot.util.ReturnGridCliente;
 
-public interface ClienteService {
+@Service
+public class ClienteService implements com.learning.springboot.service.ClienteService {
 	
-	List<Cliente> listarTodos(); 
+	private MongoTemplate mongoTemplate;
+	public ClienteRepository clienteRepository;
+	private MongoOperations mongoOperations;
+	
+	
+	@Autowired
+	public ClienteService(ClienteRepository repository, MongoOperations mongoOperations,
+			MongoTemplate mongoTemplate) {
+		this.clienteRepository = repository;
+		this.mongoOperations = mongoOperations;
+		this.mongoTemplate = mongoTemplate;
+	}
+	
+	@Override
+	public List<Cliente> listarTodos() {
+		// TODO Auto-generated method stub
+		return this.clienteRepository.findAll();
+	}
 
-	Cliente listarPorId(String id);
+	@Override
+	public Cliente listarPorId(String id) {
+		// TODO Auto-generated method stub
+		return this.clienteRepository.findOne(id);
+	}
+
+	@Override
+	public Cliente cadastrar(Cliente cliente) {
+		// TODO Auto-generated method stub
+		return this.clienteRepository.save(cliente);
+	}
+
+	@Override
+	public Cliente atualizar(Cliente cliente) {
+		// TODO Auto-generated method stub
+		return this.clienteRepository.save(cliente);
+	}
+
+	@Override
+	public void remover(String id) {
+		this.clienteRepository.delete(id);
+
+	}
+	//**************************************************************************************
+	public ReturnGridCliente findAll(ClienteFilter filter) {
+		
+		ReturnGridCliente result = new ReturnGridCliente();
 	
-	Cliente cadastrar(Cliente cliente);
+	    Criteria criterias = Criteria.where("nome").regex(filter.getNome());
 	
-	Cliente atualizar(Cliente cliente);
 	
-	ReturnGridCliente findAll(ClienteFilter cliente);
+	    Query query = new Query(criterias);
 	
-	void remover(String id);
 	
+	   List<Cliente> cliente = mongoTemplate.find(query, Cliente.class);
+	   result.setConteudo(cliente);
+	   
+	return result;
+	
+	}
+
 }
