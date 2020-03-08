@@ -1,6 +1,5 @@
 package com.learning.springboot.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import com.learning.springboot.util.ClienteFilter;
 import com.learning.springboot.util.ReturnGridCliente;
 
 @Service
-public class ClienteService implements com.learning.springboot.service.ClienteService {
+public class ClienteService implements com.learning.springboot.service.ClienteServiceInterface {
 	
 	private MongoTemplate mongoTemplate;
 	public ClienteRepository clienteRepository;
@@ -33,25 +32,21 @@ public class ClienteService implements com.learning.springboot.service.ClienteSe
 	
 	@Override
 	public List<Cliente> listarTodos() {
-		// TODO Auto-generated method stub
 		return this.clienteRepository.findAll();
 	}
 
 	@Override
 	public Cliente listarPorId(String id) {
-		// TODO Auto-generated method stub
 		return this.clienteRepository.findOne(id);
 	}
 
 	@Override
 	public Cliente cadastrar(Cliente cliente) {
-		// TODO Auto-generated method stub
 		return this.clienteRepository.save(cliente);
 	}
 
 	@Override
 	public Cliente atualizar(Cliente cliente) {
-		// TODO Auto-generated method stub
 		return this.clienteRepository.save(cliente);
 	}
 

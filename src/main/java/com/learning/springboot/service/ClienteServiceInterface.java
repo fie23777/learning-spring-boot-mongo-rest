@@ -6,7 +6,7 @@ import com.learning.springboot.model.Cliente;
 import com.learning.springboot.util.ClienteFilter;
 import com.learning.springboot.util.ReturnGridCliente;
 
-public interface ClienteService {
+public interface ClienteServiceInterface {
 	
 	List<Cliente> listarTodos(); 
 

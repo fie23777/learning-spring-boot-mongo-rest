@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.learning.springboot.model.Cliente;
 import com.learning.springboot.responsegeneric.ResponseGeneric;
-import com.learning.springboot.service.ClienteService;
+import com.learning.springboot.service.ClienteServiceInterface;
 import com.learning.springboot.util.ClienteFilter;
 import com.learning.springboot.util.ReturnGridCliente;
 
@@ -29,7 +29,7 @@ import com.learning.springboot.util.ReturnGridCliente;
 public class ClienteController {
 
 	@Autowired
-	public ClienteService clienteService;
+	public ClienteServiceInterface clienteService;
 	
 	
 	@GetMapping
